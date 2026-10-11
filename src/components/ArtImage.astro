@@ -10,19 +10,23 @@ const cdnUrl = import.meta.env.PUBLIC_BUNNY_CDN_URL?.replace(/\/$/, '') || '';
 
 let fullSrc = path;
 
-// If it's a relative path from Bunny (e.g. "works/painting.jpg")
-if (!path.startsWith('http') && !path.startsWith('/uploads')) {
+if (path.startsWith('http')) {
+  fullSrc = path;
+} else if (path.startsWith('/uploads')) {
+  // If Bunny CDN is configured to mirror /uploads, prefix it; otherwise serve locally
+  fullSrc = cdnUrl ? `${cdnUrl}${path}` : path;
+} else {
   const cleanPath = path.replace(/^\//, '');
   fullSrc = cdnUrl ? `${cdnUrl}/${cleanPath}` : `/${cleanPath}`;
 }
 ---
 
-<figure class="overflow-hidden bg-stone-100">
-  <img 
-    src={fullSrc} 
-    alt={alt} 
-    loading="lazy" 
-    decoding="async" 
-    class={`w-full h-auto block ${className}`} 
+<figure class="overflow-hidden bg-[#f0eee9]">
+  <img
+    src={fullSrc}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+    class={`w-full h-auto block ${className}`}
   />
 </figure>
