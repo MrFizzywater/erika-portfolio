@@ -11,11 +11,13 @@ const cdnUrl = import.meta.env.PUBLIC_BUNNY_CDN_URL?.replace(/\/$/, '') || '';
 let fullSrc = path;
 
 if (path.startsWith('http')) {
+  // Absolute URLs stay as-is
   fullSrc = path;
 } else if (path.startsWith('/uploads')) {
-  // If Bunny CDN is configured to mirror /uploads, prefix it; otherwise serve locally
-  fullSrc = cdnUrl ? `${cdnUrl}${path}` : path;
+  // Decap CMS uploads are stored in Git / public/uploads — serve directly from site
+  fullSrc = path;
 } else {
+  // Legacy or manual Bunny CDN paths (e.g. "works/piece-one.jpg")
   const cleanPath = path.replace(/^\//, '');
   fullSrc = cdnUrl ? `${cdnUrl}/${cleanPath}` : `/${cleanPath}`;
 }
