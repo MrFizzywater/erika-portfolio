@@ -1,98 +1,148 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import ArtImage from '../components/ArtImage.astro';
 
 const pieces = (await getCollection('artwork')).sort((a, b) => (b.data.year || 0) - (a.data.year || 0));
+
+const aboutEntry = await getEntry('pages', 'about');
+const contactEntry = await getEntry('pages', 'contact');
+
+const aboutContent = aboutEntry ? await render(aboutEntry) : null;
+const { Content: AboutBody } = aboutContent || {};
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth bg-[#faf8f5] text-stone-900 selection:bg-stone-300 antialiased">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Erika Lacroix — Artist</title>
+    <title>Erika Lacroix — Fine Artist</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
       .font-serif-art { font-family: 'Cormorant Garamond', Georgia, serif; }
       .font-sans-art { font-family: 'Inter', -apple-system, sans-serif; }
     </style>
   </head>
-  <body class="bg-[#faf8f5] text-stone-900 font-sans-art selection:bg-stone-200 antialiased min-h-screen">
-    
-    <!-- Top Navigation / Brand -->
-    <header class="max-w-7xl mx-auto px-6 sm:px-12 pt-16 pb-12 flex flex-col md:flex-row md:items-end justify-between border-b border-stone-200/70 gap-6">
-      <div>
-        <h1 class="font-serif-art text-4xl sm:text-5xl font-light tracking-tight text-stone-900">
-          Erika Lacroix
-        </h1>
-        <p class="text-xs uppercase tracking-[0.25em] text-stone-500 mt-2 font-medium">
-          Original Works &bull; Acrylic & Cold Wax
-        </p>
-      </div>
+  <body class="font-sans-art min-h-screen flex flex-col justify-between">
 
-      <nav class="flex items-center gap-8 text-xs uppercase tracking-[0.2em] text-stone-600">
-        <a href="#works" class="hover:text-stone-950 transition-colors">Works</a>
-        <a href="#about" class="hover:text-stone-950 transition-colors">About</a>
-        <a href="#contact" class="hover:text-stone-950 transition-colors">Contact</a>
-      </nav>
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-[#faf8f5]/90 backdrop-blur-md border-b border-stone-200/60 transition-all">
+      <div class="max-w-7xl mx-auto px-6 sm:px-12 py-6 flex items-baseline justify-between">
+        <div>
+          <a href="#" class="font-serif-art text-3xl sm:text-4xl font-light tracking-tight text-stone-950 block">
+            Erika Lacroix
+          </a>
+          <p class="text-[10px] uppercase tracking-[0.28em] text-stone-500 font-medium mt-1">
+            Acrylic &bull; Cold Wax &bull; Mixed Media
+          </p>
+        </div>
+
+        <nav class="flex items-center gap-6 sm:gap-10 text-[11px] uppercase tracking-[0.25em] text-stone-600 font-medium">
+          <a href="#works" class="hover:text-stone-950 transition-colors">Works</a>
+          <a href="#about" class="hover:text-stone-950 transition-colors">About</a>
+          <a href="#contact" class="hover:text-stone-950 transition-colors">Contact</a>
+        </nav>
+      </div>
     </header>
 
-    <!-- Gallery Grid -->
-    <main id="works" class="max-w-7xl mx-auto px-6 sm:px-12 py-16">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-        {pieces.map((item) => (
-          <article class="group flex flex-col">
-            <div class="relative bg-stone-100 rounded-sm overflow-hidden shadow-sm">
-              <ArtImage 
-                path={item.data.imagePath} 
-                alt={item.data.title} 
-                className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-              />
-            </div>
-            
-            <div class="mt-5 space-y-1">
-              <div class="flex items-baseline justify-between gap-4">
-                <h2 class="font-serif-art text-2xl font-normal text-stone-900 group-hover:text-stone-600 transition-colors">
-                  {item.data.title}
-                </h2>
-                <span class="text-xs text-stone-400 font-mono">{item.data.year}</span>
+    <main class="flex-grow">
+      <!-- Gallery Grid -->
+      <section id="works" class="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20 items-start">
+          {pieces.map((item) => (
+            <article class="group flex flex-col">
+              <div class="relative bg-[#f2eee9] border border-stone-200/50 shadow-xs overflow-hidden">
+                <ArtImage
+                  path={item.data.imagePath}
+                  alt={item.data.title}
+                  className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+                />
               </div>
-              <p class="text-xs tracking-wide text-stone-500 uppercase">{item.data.medium}</p>
-              <p class="text-xs text-stone-400">{item.data.dimensions}</p>
+
+              <div class="mt-5 space-y-1">
+                <div class="flex items-baseline justify-between gap-4">
+                  <h2 class="font-serif-art text-2xl font-light text-stone-950">
+                    {item.data.title}
+                  </h2>
+                  <span class="text-xs text-stone-400 font-mono">{item.data.year}</span>
+                </div>
+
+                <p class="text-[11px] tracking-wide text-stone-500 uppercase">{item.data.medium}</p>
+                
+                <div class="flex items-center justify-between pt-1">
+                  <p class="text-xs text-stone-400 font-light">{item.data.dimensions}</p>
+                  {item.data.status && (
+                    <span class={`text-[10px] uppercase tracking-widest px-2 py-0.5 border ${
+                      item.data.status === 'Available'
+                        ? 'border-stone-300 text-stone-700 bg-white/50'
+                        : 'border-transparent text-stone-400 italic'
+                    }`}>
+                      {item.data.status}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Statement & Bio Section -->
+      <section id="about" class="border-t border-stone-200/60 bg-[#f4f0ea]/70 py-24 sm:py-32">
+        <div class="max-w-3xl mx-auto px-6 sm:px-12 space-y-10">
+          <div class="space-y-4 text-center">
+            <h3 class="text-xs uppercase tracking-[0.3em] text-stone-500 font-medium">Artist Statement</h3>
+            {aboutEntry?.data.headline && (
+              <p class="font-serif-art text-2xl sm:text-3xl font-light leading-snug text-stone-900 italic">
+                "{aboutEntry.data.headline}"
+              </p>
+            )}
+          </div>
+
+          {AboutBody && (
+            <div class="prose prose-stone max-w-none text-stone-700 font-light leading-relaxed text-base pt-4 border-t border-stone-300/50">
+              <AboutBody />
             </div>
-          </article>
-        ))}
-      </div>
+          )}
+        </div>
+      </section>
+
+      <!-- Studio & Inquiries -->
+      <section id="contact" class="border-t border-stone-200/60 py-20 bg-[#faf8f5]">
+        <div class="max-w-xl mx-auto px-6 text-center space-y-6">
+          <h3 class="font-serif-art text-3xl font-light text-stone-950">
+            {contactEntry?.data.title || "Inquiries"}
+          </h3>
+          <p class="text-stone-600 text-sm leading-relaxed font-light">
+            {contactEntry?.data.intro || "For acquisitions, exhibition inquiries, or private studio viewings."}
+          </p>
+
+          {contactEntry?.data.email && (
+            <div class="pt-2">
+              <a
+                href={`mailto:${contactEntry.data.email}`}
+                class="inline-block text-xs uppercase tracking-[0.25em] text-stone-900 border-b border-stone-900 pb-1 hover:text-stone-500 hover:border-stone-400 transition-colors"
+              >
+                {contactEntry.data.email}
+              </a>
+            </div>
+          )}
+
+          {contactEntry?.data.location && (
+            <p class="text-[11px] uppercase tracking-widest text-stone-400 pt-2">
+              {contactEntry.data.location}
+            </p>
+          )}
+        </div>
+      </section>
     </main>
 
-    <!-- Statement / About -->
-    <section id="about" class="border-t border-stone-200/70 bg-[#f5f2ed]/60 py-24">
-      <div class="max-w-3xl mx-auto px-6 text-center space-y-6">
-        <h3 class="font-serif-art text-3xl font-light text-stone-900">Artist Statement</h3>
-        <p class="font-serif-art text-xl leading-relaxed text-stone-700 italic">
-          "Working primarily with acrylic, cold wax, and layered textures, each piece is an exploration of organic depth, time, and surface history."
-        </p>
-      </div>
-    </section>
-
-    <!-- Footer / Inquiries -->
-    <footer id="contact" class="border-t border-stone-200/70 py-16 text-center text-xs tracking-widest uppercase text-stone-400">
+    <!-- Simple Minimal Footer -->
+    <footer class="border-t border-stone-200/60 py-10 text-center text-[10px] tracking-[0.25em] uppercase text-stone-400">
       <p>&copy; {new Date().getFullYear()} Erika Lacroix. All rights reserved.</p>
     </footer>
 
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
   </body>
 </html>
