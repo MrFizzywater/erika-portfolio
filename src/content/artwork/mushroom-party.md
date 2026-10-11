@@ -7,4 +7,4 @@ status: Available
 imagePath: /uploads/mushrooms.jpg
 featured: true
 ---
-a beautiful painting of mushrooms.
+a beautiful painting of mushrooms. you can practically smell them.
