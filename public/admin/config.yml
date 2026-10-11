@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: MrFizzywater/erika-portfolio
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "artwork"
+    label: "Artwork"
+    folder: "src/content/artwork"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Medium", name: "medium", widget: "string", default: "Acrylic and cold wax on panel" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
+      - { label: "Dimensions", name: "dimensions", widget: "string", hint: "e.g. 24 x 36 in" }
+      - { label: "Artwork Photo", name: "imagePath", widget: "image" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Notes / Description", name: "body", widget: "markdown", required: false }

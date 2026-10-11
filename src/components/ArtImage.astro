@@ -7,16 +7,22 @@ interface Props {
 
 const { path, alt, className = '' } = Astro.props;
 const cdnUrl = import.meta.env.PUBLIC_BUNNY_CDN_URL?.replace(/\/$/, '') || '';
-const cleanPath = path.replace(/^\//, '');
-const fullSrc = cdnUrl ? `${cdnUrl}/${cleanPath}` : `/${cleanPath}`;
+
+let fullSrc = path;
+
+// If it's a relative path from Bunny (e.g. "works/painting.jpg")
+if (!path.startsWith('http') && !path.startsWith('/uploads')) {
+  const cleanPath = path.replace(/^\//, '');
+  fullSrc = cdnUrl ? `${cdnUrl}/${cleanPath}` : `/${cleanPath}`;
+}
 ---
 
-<figure class="overflow-hidden bg-neutral-100 rounded">
+<figure class="overflow-hidden bg-stone-100">
   <img 
     src={fullSrc} 
     alt={alt} 
     loading="lazy" 
     decoding="async" 
-    class={`w-full h-auto object-cover transition-opacity duration-300 hover:opacity-90 ${className}`} 
+    class={`w-full h-auto block ${className}`} 
   />
 </figure>
