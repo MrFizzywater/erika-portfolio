@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  activeNav?: 'works' | 'about' | 'contact';
+}
+
+const { title = "Erika Lacroix — Artist", activeNav = "works" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-[#fcfbf9] text-stone-900 selection:bg-stone-200 antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style is:global>
+      .font-serif-art { font-family: 'Cormorant Garamond', Georgia, serif; }
+      .font-sans-art { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+    </style>
+  </head>
+  <body class="font-sans-art min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Brand -->
+    <header class="border-b border-stone-200/60 bg-[#fcfbf9]/90 backdrop-blur-md sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto px-6 sm:px-10 py-7 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+        <div>
+          <a href="/" class="font-serif-art text-3xl sm:text-4xl font-light tracking-tight text-stone-950 block hover:opacity-80 transition-opacity">
+            Erika Lacroix
+          </a>
+          <p class="text-[10px] uppercase tracking-[0.3em] text-stone-400 font-medium mt-1">
+            Cold Wax &bull; Acrylic &bull; Mixed Media
+          </p>
+        </div>
+
+        <nav class="flex items-center gap-8 text-[11px] uppercase tracking-[0.25em] font-medium pt-2 sm:pt-0">
+          <a 
+            href="/" 
+            class={activeNav === 'works' ? "text-stone-950 border-b border-stone-900 pb-0.5" : "text-stone-500 hover:text-stone-950 transition-colors"}
+          >
+            Works
+          </a>
+          <a 
+            href="/about" 
+            class={activeNav === 'about' ? "text-stone-950 border-b border-stone-900 pb-0.5" : "text-stone-500 hover:text-stone-950 transition-colors"}
+          >
+            About
+          </a>
+          <a 
+            href="/contact" 
+            class={activeNav === 'contact' ? "text-stone-950 border-b border-stone-900 pb-0.5" : "text-stone-500 hover:text-stone-950 transition-colors"}
+          >
+            Contact
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Slot -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Minimal Lightbox Modal -->
+    <dialog id="art-lightbox" class="backdrop:bg-stone-950/85 bg-transparent p-4 sm:p-10 max-w-5xl w-full m-auto outline-none transition-all">
+      <div class="flex flex-col items-center justify-center relative">
+        <button id="close-lightbox" class="absolute -top-10 right-0 text-white/70 hover:text-white text-xs uppercase tracking-widest font-mono p-2">
+          Close [ESC]
+        </button>
+        <img id="lightbox-img" src="" alt="" class="max-h-[82vh] max-w-full object-contain rounded-xs shadow-2xl bg-stone-900/40" />
+        <div id="lightbox-caption" class="mt-4 text-center text-white/90 font-serif-art text-xl"></div>
+      </div>
+    </dialog>
+
+    <footer class="border-t border-stone-200/60 py-12 text-center text-[10px] tracking-[0.25em] uppercase text-stone-400">
+      <p>&copy; {new Date().getFullYear()} Erika Lacroix. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const dialog = document.getElementById('art-lightbox') as HTMLDialogElement;
+      const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+      const caption = document.getElementById('lightbox-caption') as HTMLElement;
+      const closeBtn = document.getElementById('close-lightbox');
+
+      document.querySelectorAll('[data-lightbox-trigger]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = el as HTMLElement;
+          const fullSrc = target.getAttribute('data-full-src') || '';
+          const title = target.getAttribute('data-title') || '';
+          const meta = target.getAttribute('data-meta') || '';
+
+          if (lightboxImg && dialog) {
+            lightboxImg.src = fullSrc;
+            lightboxImg.alt = title;
+            caption.innerHTML = `<span class="italic">${title}</span> &bull; <span class="text-xs font-sans font-light tracking-wide text-stone-300 uppercase">${meta}</span>`;
+            dialog.showModal();
+          }
+        });
+      });
+
+      closeBtn?.addEventListener('click', () => dialog?.close());
+      dialog?.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+    </script>
+  </body>
+</html>
