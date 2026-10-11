@@ -2,10 +2,9 @@ backend:
   name: github
   repo: MrFizzywater/erika-portfolio
   branch: main
-  base_url: https://api.decapcms.org
+  base_url: https://auth.erikalacroix.com
   auth_endpoint: auth
 
-# Optional for public display / assets
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
