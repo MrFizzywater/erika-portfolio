@@ -1,5 +1,5 @@
 ---
-title: Mushroom Party
+title: Mushroom Party!
 medium: Acrylic on canvas
 year: 2026
 dimensions: 24x18
