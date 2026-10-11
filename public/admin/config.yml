@@ -18,6 +18,29 @@ collections:
       - { label: "Medium", name: "medium", widget: "string", default: "Acrylic and cold wax on panel" }
       - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
       - { label: "Dimensions", name: "dimensions", widget: "string", hint: "e.g. 24 x 36 in" }
+      - { label: "Status", name: "status", widget: "select", options: ["Available", "Sold", "Private Collection"], default: "Available" }
       - { label: "Artwork Photo", name: "imagePath", widget: "image" }
-      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Featured in Selected Works", name: "featured", widget: "boolean", default: false }
       - { label: "Notes / Description", name: "body", widget: "markdown", required: false }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "src/content/pages/about.md"
+        label: "About & Artist Statement"
+        name: "about"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "About Erika Lacroix" }
+          - { label: "Headline / Statement Intro", name: "headline", widget: "string", default: "Working primarily with acrylic, cold wax, and layered textures." }
+          - { label: "Artist Portrait / Studio Image", name: "portraitImage", widget: "image", required: false }
+          - { label: "Artist Statement & Bio", name: "body", widget: "markdown" }
+
+      - file: "src/content/pages/contact.md"
+        label: "Contact & Inquiries"
+        name: "contact"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Studio & Inquiries" }
+          - { label: "Introductory Note", name: "intro", widget: "string", default: "For original inquiries, gallery representation, or studio visits." }
+          - { label: "Email Address", name: "email", widget: "string" }
+          - { label: "Location Note", name: "location", widget: "string", default: "Midland, Ontario, Canada" }
+          - { label: "Instagram Link", name: "instagram", widget: "string", required: false }
