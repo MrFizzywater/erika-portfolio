@@ -1,0 +1,22 @@
+---
+interface Props {
+  path: string;
+  alt: string;
+  className?: string;
+}
+
+const { path, alt, className = '' } = Astro.props;
+const cdnUrl = import.meta.env.PUBLIC_BUNNY_CDN_URL?.replace(/\/$/, '') || '';
+const cleanPath = path.replace(/^\//, '');
+const fullSrc = cdnUrl ? `${cdnUrl}/${cleanPath}` : `/${cleanPath}`;
+---
+
+<figure class="overflow-hidden bg-neutral-100 rounded">
+  <img 
+    src={fullSrc} 
+    alt={alt} 
+    loading="lazy" 
+    decoding="async" 
+    class={`w-full h-auto object-cover transition-opacity duration-300 hover:opacity-90 ${className}`} 
+  />
+</figure>

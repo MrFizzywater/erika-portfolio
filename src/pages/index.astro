@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import ArtImage from '../components/ArtImage.astro';
+
+const pieces = await getCollection('artwork');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Erika Lacroix | Selected Works</title>
+  </head>
+  <body class="bg-neutral-50 text-neutral-900 min-h-screen">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <header class="mb-14">
+        <h1 class="text-3xl font-light tracking-wide uppercase">Erika Lacroix</h1>
+        <p class="text-neutral-500 mt-2 text-sm tracking-wider uppercase">Artist & Works</p>
+      </header>
+
+      <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {pieces.map((item) => (
+          <article class="flex flex-col group">
+            <ArtImage 
+              path={item.data.imagePath} 
+              alt={item.data.title} 
+              className="aspect-[4/5]"
+            />
+            <div class="mt-4 flex justify-between items-baseline">
+              <h2 class="font-medium text-base group-hover:text-neutral-600 transition-colors">
+                {item.data.title}
+              </h2>
+              <span class="text-neutral-400 text-sm">{item.data.year}</span>
+            </div>
+            <p class="text-sm text-neutral-500">{item.data.medium}</p>
+            <p class="text-xs text-neutral-400 mt-0.5">{item.data.dimensions}</p>
+          </article>
+        ))}
+      </main>
+    </div>
+  </body>
+</html>
