@@ -8,9 +8,23 @@ const artwork = defineCollection({
     medium: z.string(),
     year: z.number(),
     dimensions: z.string(),
+    status: z.enum(['Available', 'Sold', 'Private Collection']).default('Available'),
     imagePath: z.string(),
     featured: z.boolean().default(false),
   }),
 });
 
-export const collections = { artwork };
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    headline: z.string().optional(),
+    portraitImage: z.string().optional(),
+    intro: z.string().optional(),
+    email: z.string().optional(),
+    location: z.string().optional(),
+    instagram: z.string().optional(),
+  }),
+});
+
+export const collections = { artwork, pages };
