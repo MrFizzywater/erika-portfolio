@@ -3,7 +3,6 @@ backend:
   repo: MrFizzywater/erika-portfolio
   branch: main
   base_url: https://auth.erikalacroix.com
-  auth_endpoint: auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
